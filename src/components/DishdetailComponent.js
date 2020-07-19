@@ -1,16 +1,12 @@
 import React, { Component } from "react";
 import { Card, CardImg, CardText, CardBody, CardTitle } from "reactstrap";
-import Moment from "react-moment";
+// import Moment from "react-moment";
 
 class Dishdetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      comt: null,
     };
-  }
-  set(dish) {
-    this.setState({ comt: dish });
   }
   renderDish(dish) {
     if (dish != null)
@@ -25,37 +21,31 @@ class Dishdetail extends Component {
               </CardBody>
             </Card>
           </div>
-          <div className="col-12 col-md-5 m-1">
-           
-            <Card>
-            
-              <CardTitle><div>
-                <strong>Comments</strong></div>
-              </CardTitle>
+          <div className="col-12 col-md-5 m-1">           
+            <Card>            
               <CardBody>
-                <ul>
+              <CardText>
+                <strong>Comments</strong>
+                </CardText>  
                   {dish.comments.map((cmt) => {
                     return (
-                      <div key={cmt.id}>
-                        {cmt.comment}
-                        <div>
-                          --{cmt.author} <Moment format="ll">{cmt.date}</Moment>
-                        </div>
-                      </div>
+                      <div key={cmt.id}> <CardText>
+                        {cmt.comment} </CardText>                   
+                        <CardText>--{cmt.author} {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(cmt.date)))}</CardText>
+                        <div></div>
+                      </div>                     
                     );
-                  })}
-                </ul>
-              </CardBody>
-             
+                  })}              
+              </CardBody>            
             </Card>
           </div>
-        </div>
+          </div>
       );
     else return <div></div>;
   }
 
   render() {
-    return <div>{this.renderDish(this.props.dish)}</div>;
+    return <div className="container">{this.renderDish(this.props.dish)}</div>;
   }
 }
 export default Dishdetail;
