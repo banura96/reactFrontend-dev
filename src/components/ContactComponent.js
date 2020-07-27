@@ -76,7 +76,7 @@ class Contact extends Component{
                                     <Input type="text" id="firstname" name="firstname"
                                         placeholder="First Name"
                                         value={this.state.firstname}
-                                         />
+                                         onChange={this.handleInputChange}/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
