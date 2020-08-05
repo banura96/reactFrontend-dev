@@ -9,6 +9,53 @@ const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
 
+function RenderComments({comments}) {
+  return(
+ <Card>
+              <CardBody>
+                <CardText>
+                  <strong>Comments</strong>
+                </CardText>
+                {comments.map((cmt) => {
+                  return (
+                    <div key={cmt.id}>
+                      {" "}
+                      <CardText>{cmt.comment} </CardText>
+                      <CardText>
+                        --{cmt.author}{" "}
+                        {new Intl.DateTimeFormat("en-US", {
+                          year: "numeric",
+                          month: "short",
+                          day: "2-digit",
+                        }).format(new Date(Date.parse(cmt.date)))}
+                      </CardText>
+                      <div></div>
+                    </div>
+                  );
+                })}
+              </CardBody>
+           
+            </Card> 
+)
+}
+
+function RenderDetails({dish}){
+  return(
+  <Card>
+    <CardImg
+      width="100%"
+      top
+      src={dish.image}
+      alt={dish.name}
+    />
+    <CardBody>
+      <CardTitle>{dish.name}</CardTitle>
+      <CardText>{dish.description}</CardText>
+    </CardBody>
+  </Card>)
+}
+
+
 class Dishdetail extends Component{
 constructor(props){
   super(props)
@@ -28,62 +75,32 @@ modalOpen(){
 
 
 handleSubmit(values) {
-  console.log('Current State is: ' + JSON.stringify(values));
-  alert('Current State is: ' + JSON.stringify(values));
+  // console.log('Current State is: ' + JSON.stringify(values));
+  // alert('Current State is: ' + JSON.stringify(values));
+  this.props.addComment(this.props.dish.id, values.rating, values.author,values.comment)
   // event.preventDefault();
 }
+
+
+
 
   render(){
     return (
       <div className="container">
         <div className="row">
           <div className="col-12 col-md-5 m-1">
-            <Card>
-              <CardImg
-                width="100%"
-                top
-                src={this.props.dish.image}
-                alt={this.props.dish.name}
-              />
-              <CardBody>
-                <CardTitle>{this.props.dish.name}</CardTitle>
-                <CardText>{this.props.dish.description}</CardText>
-              </CardBody>
-            </Card>
+            <RenderDetails dish={this.props.dish}/>            
           </div>
           <div className="col-12 col-md-5 m-1">
-            <Card>
-              <CardBody>
-                <CardText>
-                  <strong>Comments</strong>
-                </CardText>
-                {this.props.comments.map((cmt) => {
-                  return (
-                    <div key={cmt.id}>
-                      {" "}
-                      <CardText>{cmt.comment} </CardText>
-                      <CardText>
-                        --{cmt.author}{" "}
-                        {new Intl.DateTimeFormat("en-US", {
-                          year: "numeric",
-                          month: "short",
-                          day: "2-digit",
-                        }).format(new Date(Date.parse(cmt.date)))}
-                      </CardText>
-                      <div></div>
-                    </div>
-                  );
-                })}
-              </CardBody>
-              <div>
+            <RenderComments comments={this.props.comments}/>
                 <Button outline color="secondary" onClick={this.modalOpen}>
                   <i className="fa fa-pencil" aria-hidden="true"></i> Submit
                   Comment
                 </Button>
               </div>
-            </Card>
           </div>
-        </div>
+       
+      
         <Modal isOpen={this.state.isModelOpen} toggle={this.modalOpen}>
           <ModalHeader>Submit Comment</ModalHeader>
           <ModalBody>
