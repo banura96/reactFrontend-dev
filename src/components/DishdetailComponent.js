@@ -3,6 +3,9 @@ import {Card, CardBody, CardTitle, CardText, CardImg,
   Button, Row, Label, Modal, ModalBody, ModalHeader} from "reactstrap";
 import { Control, LocalForm, Errors} from 'react-redux-form';
 
+import { Loading } from './LoadingComponent';
+
+
 
 
 const required = (val) => val && val.length;
@@ -85,6 +88,26 @@ handleSubmit(values) {
 
 
   render(){
+
+    if (this.props.isLoading) {
+      return(
+          <div className="container">
+              <div className="row">            
+                  <Loading />
+              </div>
+          </div>
+      );
+  }
+  else if (this.props.errMess) {
+      return(
+          <div className="container">
+              <div className="row">            
+                  <h4>{this.props.errMess}</h4>
+              </div>
+          </div>
+      );
+  }
+  else if (this.props.dish != null){
     return (
       <div className="container">
         <div className="row">
@@ -170,6 +193,7 @@ handleSubmit(values) {
       </div>
     );
   }
+}
 }  
    
 
